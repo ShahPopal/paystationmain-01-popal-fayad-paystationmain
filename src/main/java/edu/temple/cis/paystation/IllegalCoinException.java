@@ -14,6 +14,8 @@ package edu.temple.cis.paystation;
 public class IllegalCoinException extends Exception {
 
     public IllegalCoinException(String e) {
+
         super(e);
+        //System.out.println(e);
     }
 }

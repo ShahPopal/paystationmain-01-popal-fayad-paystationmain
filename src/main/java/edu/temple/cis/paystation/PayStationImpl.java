@@ -26,14 +26,13 @@ public class PayStationImpl implements PayStation {
     private int timeBought;
 
     @Override
-    public void addPayment(int coinValue)
-            throws IllegalCoinException {
+    public void addPayment(int coinValue) throws IllegalCoinException {
         switch (coinValue) {
-            case 5: break;
-            case 10: break;
-            case 25: break;
-            default:
-                throw new IllegalCoinException("Invalid coin: " + coinValue);
+            case 5:
+            case 10:
+            case 25:
+                break;
+            default: throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
         insertedSoFar += coinValue;
         timeBought = insertedSoFar / 5 * 2;
@@ -41,7 +40,8 @@ public class PayStationImpl implements PayStation {
 
     @Override
     public int readDisplay() {
-        return timeBought;
+        System.out.println("** CURRENTLY YOU HAVE ** " + timeBought + " mins for " + insertedSoFar + " cents.");
+        return  timeBought;
     }
 
     @Override
