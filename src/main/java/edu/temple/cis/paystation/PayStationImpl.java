@@ -19,11 +19,14 @@
  */
 
 package edu.temple.cis.paystation;
+import java.util.HashMap;
 
 public class PayStationImpl implements PayStation {
     
     private int insertedSoFar;
     private int timeBought;
+    private static Map<Integer, Integer>insertedCoins = new HashMap<>();
+    private int count_5, count_10, count_25 = 0;
 
     @Override
     public void addPayment(int coinValue)
@@ -41,6 +44,8 @@ public class PayStationImpl implements PayStation {
 
     @Override
     public int readDisplay() {
+
+        System.out.println("You have " + timeBought + " minutes with " + insertedSoFar + " cents put in.");
         return timeBought;
     }
 
