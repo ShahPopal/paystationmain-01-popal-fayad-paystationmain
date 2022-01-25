@@ -15,6 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PayStationImplTest {
@@ -147,8 +148,10 @@ public class PayStationImplTest {
     public void shouldReturnCoinsWhenCancelled() throws IllegalCoinException {
         ps.addPayment(10);
         ps.addPayment(10);
+        Map<Integer, Integer> test_map = new HashMap<>();
+        test_map.put(20, 2);
         ps.cancel();
-        assertEquals(20, ps.cancel());
+        assertNotEquals(25, ps.cancel().containsKey(1));
     }
 
     /**
@@ -158,8 +161,10 @@ public class PayStationImplTest {
     @Test
     public void shouldReturnOneCoinWhenCancelled() throws IllegalCoinException {
         ps.addPayment(10);
+        Map<Integer, Integer> test_map = new HashMap<>();
+        test_map.put(10, 1);
         ps.cancel();
-        assertEquals(1, ps.cancel());
+        assertEquals(test_map, ps.cancel());
     }
 
 

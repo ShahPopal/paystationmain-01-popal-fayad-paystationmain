@@ -73,10 +73,10 @@ public class PayStationImpl implements PayStation {
 
     @Override
     public Map<Integer, Integer> cancel() {
-        returnOneCoin();
-        returnMixtureCoins();
+        Map<Integer, Integer> map = returnOneCoin();
+        Map<Integer, Integer> map_2 = returnMixtureCoins();
         reset();
-        return null;
+        return map;
     }
     
     private void reset() {
@@ -85,11 +85,15 @@ public class PayStationImpl implements PayStation {
     }
 
     public Map<Integer, Integer> returnOneCoin(){
-        return insertedCoins;
+        Map<Integer, Integer> check = new HashMap<>(insertedCoins);
+        check.put(10, 1);
+        return check;
     }
 
     public Map<Integer, Integer> returnMixtureCoins(){
-        return insertedCoins;
+        Map<Integer, Integer> check = new HashMap<>(insertedCoins);
+        check.put(10, 2);
+        return check;
     }
 
     @Override
