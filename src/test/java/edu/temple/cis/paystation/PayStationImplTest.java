@@ -123,4 +123,45 @@ public class PayStationImplTest {
         ps.addPayment(25);
         assertEquals("Insert after cancel should work", 10, ps.readDisplay());
     }
+
+
+    /**
+     *
+     * Verify that test empties the total amount
+     */
+    @Test
+    public void shouldReturnAndEmptyTotal() throws IllegalCoinException {
+        ps.addPayment(10);
+        ps.addPayment(25);
+        ps.addPayment(5);
+        ps.empty();
+        assertEquals(0, ps.empty());
+    }
+
+    /**
+     *
+     * Verify that the test returns more than one coin inserted
+     */
+
+    @Test
+    public void shouldReturnCoinsWhenCancelled() throws IllegalCoinException {
+        ps.addPayment(10);
+        ps.addPayment(10);
+        ps.cancel();
+        assertEquals(20, ps.cancel());
+    }
+
+    /**
+     *
+     * Verify that the test returns one coin
+     */
+    @Test
+    public void shouldReturnOneCoinWhenCancelled() throws IllegalCoinException {
+        ps.addPayment(10);
+        ps.cancel();
+        assertEquals(1, ps.cancel());
+    }
+
+
+
 }

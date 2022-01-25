@@ -28,6 +28,7 @@ public class PayStationImpl implements PayStation {
     private int timeBought;
     private static final Map<Integer, Integer> insertedCoins= new HashMap<>();
     private int count_5, count_10, count_25 = 0;
+    private int total_amount = 0;
 
     @Override
     public void addPayment(int coinValue)
@@ -64,18 +65,37 @@ public class PayStationImpl implements PayStation {
     @Override
     public Receipt buy() {
         Receipt r = new ReceiptImpl(timeBought);
+        total_amount += insertedSoFar;
         reset();
         insertedCoins.clear();
         return r;
     }
 
     @Override
-    public void cancel() {
+    public Map<Integer, Integer> cancel() {
+        returnOneCoin();
+        returnMixtureCoins();
         reset();
+        return null;
     }
     
     private void reset() {
         timeBought = insertedSoFar = 0;
         insertedCoins.clear();
+    }
+
+    public Map<Integer, Integer> returnOneCoin(){
+        return insertedCoins;
+    }
+
+    public Map<Integer, Integer> returnMixtureCoins(){
+        return insertedCoins;
+    }
+
+    @Override
+    public int empty(){
+        int amount_holder = total_amount;
+        total_amount = 0;
+        return amount_holder;
     }
 }
