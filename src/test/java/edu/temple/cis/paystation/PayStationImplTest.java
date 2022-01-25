@@ -28,11 +28,9 @@ public class PayStationImplTest {
      * Entering 5 cents should make the display report 2 minutes parking time.
      */
     @Test
-    public void shouldDisplay2MinFor5Cents()
-            throws IllegalCoinException {
+    public void shouldDisplay2MinFor5Cents() throws IllegalCoinException {
         ps.addPayment(5);
-        assertEquals("Should display 2 min for 5 cents",
-                2, ps.readDisplay());
+        assertEquals("Should display 4 min for 10 cents", 2, ps.readDisplay());
     }
 
     /**
@@ -41,8 +39,7 @@ public class PayStationImplTest {
     @Test
     public void shouldDisplay10MinFor25Cents() throws IllegalCoinException {
         ps.addPayment(25);
-        assertEquals("Should display 10 min for 25 cents",
-                10, ps.readDisplay());
+        assertEquals("Should display 10 min for 25 cents", 10, ps.readDisplay());
     }
 
     /**
@@ -57,37 +54,31 @@ public class PayStationImplTest {
      * Entering 10 and 25 cents should be valid and return 14 minutes parking
      */
     @Test
-    public void shouldDisplay14MinFor10And25Cents()
-            throws IllegalCoinException {
+    public void shouldDisplay14MinFor10And25Cents() throws IllegalCoinException {
         ps.addPayment(10);
         ps.addPayment(25);
-        assertEquals("Should display 14 min for 10+25 cents",
-                14, ps.readDisplay());
+        assertEquals("Should display 14 min for 10+25 cents", 14, ps.readDisplay());
     }
 
     /**
      * Buy should return a valid receipt of the proper amount of parking time
      */
     @Test
-    public void shouldReturnCorrectReceiptWhenBuy()
-            throws IllegalCoinException {
+    public void shouldReturnCorrectReceiptWhenBuy() throws IllegalCoinException {
         ps.addPayment(5);
         ps.addPayment(10);
         ps.addPayment(25);
         Receipt receipt;
         receipt = ps.buy();
-        assertNotNull("Receipt reference cannot be null",
-                receipt);
-        assertEquals("Receipt value must be 16 min.",
-                16, receipt.value());
+        assertNotNull("Receipt reference cannot be null", receipt);
+        assertEquals("Receipt value must be 16 min.", 16, receipt.value());
     }
 
     /**
      * Buy for 100 cents and verify the receipt
      */
     @Test
-    public void shouldReturnReceiptWhenBuy100c()
-            throws IllegalCoinException {
+    public void shouldReturnReceiptWhenBuy100c() throws IllegalCoinException {
         ps.addPayment(10);
         ps.addPayment(10);
         ps.addPayment(10);
@@ -105,37 +96,29 @@ public class PayStationImplTest {
      * Verify that the pay station is cleared after a buy scenario
      */
     @Test
-    public void shouldClearAfterBuy()
-            throws IllegalCoinException {
+    public void shouldClearAfterBuy() throws IllegalCoinException {
         ps.addPayment(25);
         ps.buy(); // I do not care about the result
         // verify that the display reads 0
-        assertEquals("Display should have been cleared",
-                0, ps.readDisplay());
+        assertEquals("Display should have been cleared", 0, ps.readDisplay());
         // verify that a following buy scenario behaves properly
         ps.addPayment(10);
         ps.addPayment(25);
-        assertEquals("Next add payment should display correct time",
-                14, ps.readDisplay());
+        assertEquals("Next add payment should display correct time", 14, ps.readDisplay());
         Receipt r = ps.buy();
-        assertEquals("Next buy should return valid receipt",
-                14, r.value());
-        assertEquals("Again, display should be cleared",
-                0, ps.readDisplay());
+        assertEquals("Next buy should return valid receipt", 14, r.value());
+        assertEquals("Again, display should be cleared", 0, ps.readDisplay());
     }
 
     /**
      * Verify that cancel clears the pay station
      */
     @Test
-    public void shouldClearAfterCancel()
-            throws IllegalCoinException {
+    public void shouldClearAfterCancel() throws IllegalCoinException {
         ps.addPayment(10);
         ps.cancel();
-        assertEquals("Cancel should clear display",
-                0, ps.readDisplay());
+        assertEquals("Cancel should clear display", 0, ps.readDisplay());
         ps.addPayment(25);
-        assertEquals("Insert after cancel should work",
-                10, ps.readDisplay());
+        assertEquals("Insert after cancel should work", 10, ps.readDisplay());
     }
 }

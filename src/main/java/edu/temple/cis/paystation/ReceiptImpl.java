@@ -22,6 +22,7 @@ public class ReceiptImpl implements Receipt {
 
     @Override
     public int value() {
+        //System.out.println("Your purchased parking time is " + value + " mins\n ** THANK YOU FOR USING OUR SERVICES! **");
         return value;
     }
 }
