@@ -15,6 +15,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
+import java.util.Map;
+
 public class PayStationImplTest {
 
     PayStation ps;
