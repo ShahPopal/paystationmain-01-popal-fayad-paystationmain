@@ -20,20 +20,34 @@
 
 package edu.temple.cis.paystation;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PayStationImpl implements PayStation {
     
     private int insertedSoFar;
     private int timeBought;
-    private static Map<Integer, Integer>insertedCoins= new HashMap<>();
-    private int coint_5, count_10, count_25 = 0;
+    private static Map<Integer, Integer> insertedCoins= new HashMap<>();
+    private int count_5, count_10, count_25 = 0;
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
         switch (coinValue) {
-            case 5: break;
-            case 10: break;
-            case 25: break;
+            case 5:
+                //Map is used to keep track of each type of 5 cents coin inserted into the Paystation
+                count_5 += 1;
+                insertedCoins.put(5, count_5);
+                break;
+
+            case 10:
+                //Map is used to keep track of each type of 10 cents coin inserted into the Paystation
+                count_10 += 1;
+                insertedCoins.put(10, count_10);
+                break;
+            case 25:
+                //Map is used to keep track of each type of 10 cents coin inserted into the Paystation
+                count_25 += 1;
+                insertedCoins.put(25, count_25);
+                break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
