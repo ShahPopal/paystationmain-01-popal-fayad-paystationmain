@@ -14,9 +14,8 @@ package edu.temple.cis.paystation;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public class PayStationImplTest {
 

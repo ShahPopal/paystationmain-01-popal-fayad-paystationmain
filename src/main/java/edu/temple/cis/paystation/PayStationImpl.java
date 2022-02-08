@@ -17,44 +17,47 @@
  * implied. You may study, use, modify, and distribute it for non-commercial
  * purposes. For any commercial use, see http://www.baerbak.com/
  */
-
 package edu.temple.cis.paystation;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PayStationImpl implements PayStation {
-    
+
     private int insertedSoFar;
     private int timeBought;
-    private static final Map<Integer, Integer> insertedCoins= new HashMap<>();
-    private int count_5, count_10, count_25 = 0;
-    private int total_amount = 0;
+    private int totalMoney;
+    private Map<Integer, Integer> insertedCoin;
+    RateStrategy RateStrategy;
+
+    // Constructor initializes instance variables
+    public PayStationImpl(){
+        insertedSoFar = timeBought = totalMoney = 0;
+        insertedCoin = new HashMap<>();
+    }
 
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
+
         switch (coinValue) {
             case 5:
-                //Map is used to keep track of each type of 5 cents coin inserted into the Paystation
-                count_5 += 1;
-                insertedCoins.put(5, count_5);
-                break;
-
             case 10:
-                //Map is used to keep track of each type of 10 cents coin inserted into the Paystation
-                count_10 += 1;
-                insertedCoins.put(10, count_10);
-                break;
             case 25:
-                //Map is used to keep track of each type of 10 cents coin inserted into the Paystation
-                count_25 += 1;
-                insertedCoins.put(25, count_25);
                 break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
+
+        insertedCoin.put(coinValue, insertedCoin.getOrDefault(coinValue, 0) + 1);
+
         insertedSoFar += coinValue;
-        timeBought = insertedSoFar / 5 * 2;
+        if(this.RateStrategy == null){
+            setRateStrategy(1);
+        }else{
+            timeBought = RateStrategy.calculateTime(insertedSoFar);
+            //timeBought = insertedSoFar / 5 * 2;
+        }
+
     }
 
     @Override
@@ -64,42 +67,58 @@ public class PayStationImpl implements PayStation {
 
     @Override
     public Receipt buy() {
-        Receipt r = new ReceiptImpl(timeBought);
-        total_amount += insertedSoFar;
+        Receipt receipt = new ReceiptImpl(timeBought);
+        totalMoney += insertedSoFar;
         reset();
-        insertedCoins.clear();
-        return r;
+        return receipt;
     }
 
     @Override
-    public Map<Integer, Integer> cancel() {
-        Map<Integer, Integer> map = returnOneCoin();
-        Map<Integer, Integer> map_2 = returnMixtureCoins();
+    public Map<Integer, Integer> cancel()
+    {
+        Map<Integer, Integer> tempMap = insertedCoin;
+        insertedCoin = new HashMap<>();
         reset();
-        return map;
+        return tempMap;
     }
-    
+
     private void reset() {
         timeBought = insertedSoFar = 0;
-        insertedCoins.clear();
-    }
-
-    public Map<Integer, Integer> returnOneCoin(){
-        Map<Integer, Integer> check = new HashMap<>(insertedCoins);
-        check.put(10, 1);
-        return check;
-    }
-
-    public Map<Integer, Integer> returnMixtureCoins(){
-        Map<Integer, Integer> check = new HashMap<>(insertedCoins);
-        check.put(10, 2);
-        return check;
+        insertedCoin.clear();
     }
 
     @Override
-    public int empty(){
-        int amount_holder = total_amount;
-        total_amount = 0;
-        return amount_holder;
+    public int empty()
+    {
+        int temp = totalMoney;
+        totalMoney = 0;
+        return temp;
+    }
+
+    public void setRateStrategy(int user_Input){
+        switch (user_Input){
+            case 1:
+                RateStrategy = new Linear1();
+                System.out.println("Alphatown");
+                break;
+            case 2:
+                RateStrategy=new Progressive();
+                System.out.println("Betatown");
+                break;
+            case 3:
+                RateStrategy=new Alternating1();
+                System.out.println("Gammatown");
+                break;
+            case 4:
+                RateStrategy = new Linear2();
+                System.out.println("Deltatown");
+                break;
+            case 5:
+                RateStrategy = new Alternating2();
+                System.out.println("Omegatown");
+                break;
+
+        }
+        timeBought = RateStrategy.calculateTime(insertedSoFar);
     }
 }

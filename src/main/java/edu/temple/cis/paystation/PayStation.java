@@ -18,8 +18,8 @@
  * purposes. For any commercial use, see http://www.baerbak.com/
  */
 package edu.temple.cis.paystation;
-
 import java.util.Map;
+import java.util.*;
 
 public interface PayStation {
 
@@ -48,10 +48,26 @@ public interface PayStation {
      */
     public Receipt buy();
 
-    /**
-     * Cancel the present transaction. Resets the machine for a new transaction.
+    /** Cancel the present transaction. Resets the paystation for a
+     * new transaction.
+     * @return A Map defining the coins returned to the user.
+     * The key is the coin type and the associated value is the
+     * number of these coins that are returned.
+     * The Map object is never null even if no coins are returned.
+     * The Map will only contain only keys for coins to be returned.
+     * The Map will be cleared after a cancel or buy.
      */
+
     public Map<Integer, Integer> cancel();
 
-    int empty();
+    /**
+     * Reset money collected. Sets the amount of money collected by the machine
+     * since the last call to 0.
+     *
+     * @return total amount of money collected by the machine since last
+     * call.
+     */
+    public int empty();
+
+    public void setRateStrategy(int user_input2);
 }
